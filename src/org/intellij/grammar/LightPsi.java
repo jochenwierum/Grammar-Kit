@@ -103,7 +103,7 @@ public class LightPsi {
 
   private static int mainImpl(File classesFile, File outJarFile) throws Throwable {
     BufferedReader reader = new BufferedReader(new FileReader(classesFile));
-    Pattern pattern = Pattern.compile("\\[Loaded (.*) from (?:file:)?(.*)]");
+    Pattern pattern = Pattern.compile(".*\\[[^\\]]*load[^\\]]*\\] (.*) source: (?:file:)?(.*)");
 
     JarOutputStream jar = new JarOutputStream(new FileOutputStream(outJarFile));
     int count = 0;

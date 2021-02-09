@@ -1,3 +1,5 @@
+import org.apache.tools.ant.util.TeeOutputStream
+
 task buildGrammar_kit_jar (type: Jar, dependsOn: [rootProject.tasks['assemble']]) {
   baseName = 'grammar-kit'
   destinationDir = file(artifactsPath)
@@ -26,3 +28,33 @@ task buildExpression_console_sample (type: Jar) {
 }
 
 task artifacts (dependsOn: [buildGrammar_kit_jar, buildGrammar_kit_zip, buildExpression_console_sample]) { }
+
+task collectLightpsi(type: JavaExec) {
+  dependsOn build
+
+  group = "build"
+  description = "collect the light psi classes"
+
+  main = "org.intellij.grammar.Main"
+  jvmArgs "-ea", "-verbose:class"
+  args "build-lightpsi", "grammars/*", "testData/generator/*", "build-lightpsi/grammars/*"
+  classpath = files(sourceSets.main.compileClasspath, sourceSets.main.runtimeClasspath)
+
+  def bos = new ByteArrayOutputStream()
+  standardOutput = new TeeOutputStream(bos, System.out);
+  doLast {
+	new File("./build-lightpsi/classes.log.txt").write bos.toString()
+  }
+}
+
+task buildLightpsi(type: JavaExec) {
+  dependsOn collectLightpsi
+
+  group = "build"
+  description = "Build the light psi version"
+
+  main = "org.intellij.grammar.LightPsi"
+  jvmArgs "-ea"
+  args "./binaries", "./build-lightpsi/classes.log.txt"
+  classpath = files(sourceSets.main.compileClasspath, sourceSets.main.runtimeClasspath)
+}
