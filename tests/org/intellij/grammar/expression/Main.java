@@ -31,7 +31,7 @@ public class Main {
     BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     String s;
     while((s = in.readLine()) != null) {
-      dump(s, false);
+      dump(s, true);
       System.out.print("> ");
     }
   }
