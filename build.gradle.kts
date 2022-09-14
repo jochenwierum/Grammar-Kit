@@ -1,5 +1,8 @@
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.ChangelogSectionUrlBuilder
+import java.io.ByteArrayOutputStream
+import java.nio.file.Files
+import java.nio.file.Path
 
 /*
  * Copyright 2011-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
@@ -228,4 +231,34 @@ signing {
 
     useInMemoryPgpKeys(signingKey, signingPassword)
     sign(publishing.publications["grammarKitJar"])
+}
+
+tasks.register<JavaExec>("collectLightpsi") {
+    dependsOn("build")
+
+    group = "build"
+    description = "collect the light psi classes"
+
+    mainClass.set("org.intellij.grammar.Main")
+    jvmArgs("-ea", "-verbose:class")
+    args("build-lightpsi", "grammars/*", "testData/generator/*", "build-lightpsi/grammars/*")
+    classpath = files(sourceSets.main.get().compileClasspath, sourceSets.main.get().runtimeClasspath)
+
+    val bos = ByteArrayOutputStream()
+    standardOutput = org.apache.tools.ant.util.TeeOutputStream(bos, System.out)
+    doLast {
+        Files.write(Path.of("./build-lightpsi/classes.log.txt"), bos.toByteArray())
+    }
+}
+
+tasks.register<JavaExec>("buildLightpsi") {
+    dependsOn("collectLightpsi")
+
+    group = "build"
+    description = "Build the light psi version"
+
+    mainClass.set("org.intellij.grammar.LightPsi")
+    jvmArgs("-ea")
+    args( "./binaries", "./build-lightpsi/classes.log.txt")
+    classpath = files(sourceSets.main.get().compileClasspath, sourceSets.main.get().runtimeClasspath)
 }
