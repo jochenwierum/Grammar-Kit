@@ -4,11 +4,16 @@
 
 package org.intellij.grammar;
 
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.LanguageASTFactory;
 import com.intellij.lang.LanguageBraceMatching;
+import com.intellij.lang.parser.GeneratedParserUtilBase;
+import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.impl.DebugUtil;
+import com.intellij.psi.SmartPsiElementPointer;
+import com.intellij.psi.tree.IStubFileElementType;
+import com.intellij.util.PairFunction;
 import org.intellij.grammar.generator.ParserGenerator;
 import org.intellij.grammar.psi.BnfFile;
 
@@ -67,7 +72,25 @@ public class Main {
               Class.forName("org.jetbrains.annotations.Nullable");
               Class.forName("org.intellij.lang.annotations.Pattern");
               Class.forName("org.intellij.lang.annotations.RegExp");
-              DebugUtil.psiToString(bnfFile, false);
+              Class.forName(ASTWrapperPsiElement.class.getName());
+              Class.forName(GeneratedParserUtilBase.class.getName());
+              Class.forName(GeneratedParserUtilBase.Parser.class.getName());
+              Class.forName(GeneratedParserUtilBase.Builder.class.getName());
+              Class.forName(GeneratedParserUtilBase.CompletionState.class.getName());
+              Class.forName(GeneratedParserUtilBase.ErrorState.class.getName());
+              Class.forName(GeneratedParserUtilBase.DummyBlock.class.getName());
+              Class.forName(Condition.class.getName());
+              Class.forName(PairFunction.class.getName());
+              Class.forName(SmartPsiElementPointer.class.getName());
+              Class.forName(com.intellij.util.Consumer.class.getName());
+              Class.forName(IStubFileElementType.class.getName());
+              Class.forName("com.intellij.lang.parser.GeneratedParserUtilBase$MyList");
+              Class.forName("com.intellij.lang.parser.GeneratedParserUtilBase$Variant");
+              Class.forName("com.intellij.lang.parser.GeneratedParserUtilBase$DummyBlockElementType");
+              Class.forName("com.intellij.lang.parser.GeneratedParserUtilBase$Frame");
+              Class.forName("com.intellij.lang.parser.GeneratedParserUtilBase$Hook");
+              Class.forName("com.intellij.lang.parser.GeneratedParserUtilBase$Hooks");
+              com.intellij.psi.impl.DebugUtil.psiToString(bnfFile, false);
             }
 
             count ++;

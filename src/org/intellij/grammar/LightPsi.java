@@ -125,9 +125,11 @@ public class LightPsi {
 
     return path.contains("/out/classes/production/") ||
            path.contains("idea.jar") ||
+           path.contains("app.jar") ||
            path.contains("platform-api.jar") ||
            path.contains("platform-impl.jar") ||
            path.contains("util.jar") ||
+           path.contains("util_rt.jar") ||
            path.contains("extensions.jar");
   }
 
