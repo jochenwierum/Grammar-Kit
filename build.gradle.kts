@@ -27,7 +27,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.jetbrains:annotations:24.0.0")
+    compileOnly("org.jetbrains:annotations:26.0.0")
 }
 
 idea {
